@@ -42,7 +42,7 @@ public class SoundButton {
     {
         final ImageButton imgbtn = new ImageButton(context);
         imgbtn.setId(name.hashCode());
-        imgbtn.setImageDrawable(R.drawable.ic_launcher_background);
+        //imgbtn.setImageDrawable(R.drawable.ic_launcher_background);
         imgbtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
