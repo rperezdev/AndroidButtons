@@ -1,15 +1,18 @@
 package com.buttons.lacueva.krakosky.lacuevabuttons;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -22,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_AUDIO = 1;
 
-    private LinearLayout layout;
+    private GridView gridViewButtons;
     private ImageButton button;
 
     private InputStream is;
@@ -32,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        layout = (LinearLayout) findViewById(R.id.linear_layout);
+        //gridViewButtons = (GridView) findViewById(R.id.grid_buttons);
         button = (ImageButton) findViewById(R.id.imageButton);
+
+        is = null;
+
+        //gridViewButtons.setAdapter(new ButtonAdapter(this));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,16 +49,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        is = null;
+        triggerButtonCreator();
 
+        /*
         String rootDirectory = Environment.getExternalStorageDirectory().toString();
 
         File myDir = new File(rootDirectory, MemoryManager.APP_FOLDERNAME);
         if(!myDir.exists()) {
             myDir.mkdirs();
         }
-
-        //triggerFilePicker();
+        */
     }
 
     @Override
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            layout.addView(getImageButton(is));
+            //layout.addView(getImageButton(is));
 
             Toast.makeText(this, "Sound added", Toast.LENGTH_LONG).show();
         }
@@ -94,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE_ADD_AUDIO);
     }
 
+    public void triggerButtonCreator()
+    {
+        Fragment fCreateButton = new CreateButtonFragment();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.rel_layout, fCreateButton);
+        transaction.commit();
+    }
+
     public static void PlayAudio(InputStream is)
     {
         if(is == null)
@@ -117,4 +133,5 @@ public class MainActivity extends AppCompatActivity {
 
         mp.start();
     }
+
 }

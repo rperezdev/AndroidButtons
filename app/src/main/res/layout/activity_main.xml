@@ -7,11 +7,14 @@
     android:layout_height="match_parent"
     tools:context="com.buttons.lacueva.krakosky.lacuevabuttons.MainActivity">
 
+    <!--
     <GridView
+        android:id="@+id/grid_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
     </GridView>
+-->
 
     <ImageButton
         android:id="@+id/imageButton"
