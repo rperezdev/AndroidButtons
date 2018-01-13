@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        triggerButtonCreator();
-
         /*
         String rootDirectory = Environment.getExternalStorageDirectory().toString();
 
@@ -73,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //layout.addView(getImageButton(is));
+
+            triggerButtonCreator();
 
             Toast.makeText(this, "Sound added", Toast.LENGTH_LONG).show();
         }
