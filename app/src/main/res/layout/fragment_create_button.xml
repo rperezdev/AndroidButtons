@@ -59,40 +59,51 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radio_color_red"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#FF2222"
-                android:layout_weight="1"/>
+            <RadioGroup
+                android:id="@+id/radiogroup_colors"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1" >
 
-            <RadioButton
-                android:id="@+id/radio_color_blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#2222FF"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:id="@+id/radio_color_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:layout_weight="1"
+                    android:buttonTint="#FF2222" />
 
-            <RadioButton
-                android:id="@+id/radio_color_green"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#45FF00"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:id="@+id/radio_color_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="#2222FF" />
 
-            <RadioButton
-                android:id="@+id/radio_color_orange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#FF4500"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:id="@+id/radio_color_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="#45FF00" />
 
-            <RadioButton
-                android:id="@+id/radio_color_yellow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#FFFF22"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:id="@+id/radio_color_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="#FF4500" />
+
+                <RadioButton
+                    android:id="@+id/radio_color_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="#FFFF22" />
+
+            </RadioGroup>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -9,16 +9,20 @@
         android:background="#ccc"
         android:paddingBottom="40dp"
         android:paddingLeft="20dp"
-        app:exampleColor="#33b5e5"
-        app:exampleDimension="24sp"
-        app:exampleDrawable="@android:drawable/ic_menu_add"
-        app:exampleString="Hello, SoundButtonView" />
+        app:exampleColor="#ddd">
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="303dp"
-        android:layout_height="222dp"
-        android:backgroundTint="@android:color/holo_green_dark"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+    </com.buttons.lacueva.krakosky.lacuevabuttons.SoundButtonView>
 
 </FrameLayout>
+
+<!--
+    app:exampleDimension="24sp"
+    app:exampleDrawable="@android:drawable/ic_menu_add"
+    app:exampleString="Hello, SoundButtonView"
+-->

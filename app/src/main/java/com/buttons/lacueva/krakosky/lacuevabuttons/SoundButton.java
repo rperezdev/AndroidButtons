@@ -1,14 +1,25 @@
 package com.buttons.lacueva.krakosky.lacuevabuttons;
 
-public class SoundButton {
+import java.io.Serializable;
+
+public class SoundButton implements Serializable {
 
     public enum Color {
-        BLUE
+        RED,
+        BLUE,
+        GREEN,
+        ORANGE,
+        YELLOW
     }
 
     private String mName;
     private String mUri;
     private Color mColor;
+
+    public SoundButton()
+    {
+        mColor = Color.BLUE;
+    }
 
     public SoundButton(String name)
     {
@@ -30,6 +41,11 @@ public class SoundButton {
     }
 
 
+    @Override
+    public String toString()
+    {
+        return mColor + "  " + mName + "  " + mUri;
+    }
     /************************
      * Getters & Setters
      ************************/
