@@ -2,7 +2,12 @@
     <string name="app_name">LaCuevaButtons</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="addsoundname">Ponle nombre al sonido</string>
+    <string name="addsoundname">Pon un nombre. (4-10 carácteres)</string>
     <string name="colorpicker">Escoge un color</string>
+
+    <string name="err_name_empty">El nombre está vacío</string>
+    <string name="err_name_too_short">El nombre es demasiado corto</string>
+    <string name="err_name_too_long">El nombre es demasiado largo</string>
+    <string name="err_uri_empty">No se ha seleccionado correctamente el audio</string>
+    <string name="err_none" />
 </resources>

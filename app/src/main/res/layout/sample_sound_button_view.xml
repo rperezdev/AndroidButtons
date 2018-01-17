@@ -1,28 +1,28 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <com.buttons.lacueva.krakosky.lacuevabuttons.SoundButtonView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:background="#ccc"
-        android:paddingBottom="40dp"
-        android:paddingLeft="20dp"
-        app:exampleColor="#ddd">
+    <ImageButton
+        android:id="@+id/btn_sound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/red_sound_button"
+        android:text="@string/addsoundname" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_sound"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/addsoundname"
+        />
 
-    </com.buttons.lacueva.krakosky.lacuevabuttons.SoundButtonView>
-
-</FrameLayout>
-
-<!--
-    app:exampleDimension="24sp"
-    app:exampleDrawable="@android:drawable/ic_menu_add"
-    app:exampleString="Hello, SoundButtonView"
--->
+</RelativeLayout>

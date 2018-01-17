@@ -2,16 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <gradient android:gradientRadius="90"
-                android:startColor="#FF4444"
-                android:centerColor="#EE4444"
-                android:endColor="#DD4444"
-                android:type="radial" />
+            <solid android:color="#FF6F00" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="#CCCCCC" />
         </shape>
     </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="#FF4444" />
+            <solid android:color="#FFB300" />
         </shape>
     </item>
 </selector>

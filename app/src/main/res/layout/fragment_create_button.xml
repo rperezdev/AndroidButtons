@@ -2,125 +2,194 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FFFCF0"
     tools:context="com.buttons.lacueva.krakosky.lacuevabuttons.CreateButtonFragment">
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <ImageButton
-            android:id="@+id/btn_play"
-            android:minWidth="50dp"
-            android:minHeight="50dp"
-            android:maxWidth="100dp"
-            android:maxHeight="100dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:background="@drawable/buttonaccept"
-            android:src="@android:drawable/ic_media_play" />
-
-        <EditText
-            android:id="@+id/edit_sound_name"
-            android:minHeight="60dp"
-            android:textSize="20dp"
-            android:backgroundTint="@android:color/darker_gray"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:hint="@string/addsoundname"
-            android:inputType="textPersonName"
-            android:paddingLeft="10dp"
-            android:textColorHint="@android:color/darker_gray" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/colorpicker" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:minHeight="250dp"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-            <RadioGroup
-                android:id="@+id/radiogroup_colors"
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonaccept"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp"
+                android:minHeight="50dp"
+                android:minWidth="50dp"
+                android:padding="10dp"
+                android:src="@android:drawable/ic_media_play" />
+
+            <EditText
+                android:id="@+id/edit_sound_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="2"
+                android:backgroundTint="@android:color/darker_gray"
+                android:ems="10"
+                android:hint="@string/addsoundname"
+                android:inputType="textPersonName"
+                android:minHeight="60dp"
+                android:paddingLeft="10dp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="20dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:text="@string/colorpicker"
+                android:textSize="20dp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1" >
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radio_color_red"
+                <RadioGroup
+                    android:id="@+id/radiogroup_colors"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_color_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#FF2222"
+                        android:checked="true" />
+
+                    <RadioButton
+                        android:id="@+id/radio_color_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#2222FF" />
+
+                    <RadioButton
+                        android:id="@+id/radio_color_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#45FF00" />
+
+                    <RadioButton
+                        android:id="@+id/radio_color_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#FF4500" />
+
+                    <RadioButton
+                        android:id="@+id/radio_color_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#FFFF22" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:layout_weight="1"
-                    android:buttonTint="#FF2222" />
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/buttonaccept"
+                    android:maxHeight="150dp"
+                    android:maxWidth="150dp"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:src="@android:drawable/ic_menu_save" />
 
-                <RadioButton
-                    android:id="@+id/radio_color_blue"
+                <ImageButton
+                    android:id="@+id/btn_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="#2222FF" />
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/buttonhelp"
+                    android:maxHeight="35dp"
+                    android:maxWidth="35dp"
+                    android:minHeight="25dp"
+                    android:minWidth="25dp"
+                    android:src="@android:drawable/ic_menu_help" />
 
-                <RadioButton
-                    android:id="@+id/radio_color_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="#45FF00" />
-
-                <RadioButton
-                    android:id="@+id/radio_color_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="#FF4500" />
-
-                <RadioButton
-                    android:id="@+id/radio_color_yellow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="#FFFF22" />
-
-            </RadioGroup>
+            </RelativeLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-
-
-    <ImageButton
-        android:id="@+id/btn_save"
-        android:minWidth="100dp"
-        android:minHeight="100dp"
-        android:maxWidth="150dp"
-        android:maxHeight="150dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/buttonaccept"
-        android:src="@android:drawable/ic_menu_save" />
+    </ScrollView>
 
 
 </FrameLayout>
+
+<!--
+       <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_save"
+                android:minWidth="100dp"
+                android:minHeight="100dp"
+                android:maxWidth="150dp"
+                android:maxHeight="150dp"
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/buttonaccept"
+                android:src="@android:drawable/ic_menu_save" />
+
+            <ImageButton
+                android:id="@+id/btn_help"
+                android:minWidth="25dp"
+                android:minHeight="25dp"
+                android:maxWidth="35dp"
+                android:maxHeight="35dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="top"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/buttonhelp"
+                android:src="@android:drawable/ic_menu_help" />
+
+        </LinearLayout>
+        -->

@@ -1,5 +1,10 @@
 package com.buttons.lacueva.krakosky.lacuevabuttons;
 
+import android.content.Context;
+import android.net.Uri;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 public class SoundButton implements Serializable {
@@ -13,8 +18,11 @@ public class SoundButton implements Serializable {
     }
 
     private String mName;
-    private String mUri;
     private Color mColor;
+    private String mUri;
+
+    private InputStream mIS = null;
+
 
     public SoundButton()
     {
@@ -40,6 +48,15 @@ public class SoundButton implements Serializable {
         mUri = uri;
     }
 
+    public InputStream getInputStream(Context context) throws IOException
+    {
+        if(mUri == null || mUri.isEmpty())
+            return null;
+
+        mIS = context.getContentResolver().openInputStream(Uri.parse(mUri));
+
+        return mIS;
+    }
 
     @Override
     public String toString()
