@@ -10,14 +10,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CreateButtonFragment.OnNewSoundButtonCreated {
 
@@ -25,7 +28,8 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
 
     private GridView gridSoundButtons;
     private FloatingActionButton button;
-    private List<SoundButton> soundbuttons = new ArrayList<>();
+    private SoundButtonList buttonList;
+    private RelativeLayout layoutFragment;
 
     private SoundButtonListAdapter adapter;
 
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
 
         gridSoundButtons = (GridView) findViewById(R.id.grid_soundbuttons);
         button = (FloatingActionButton) findViewById(R.id.btn_add_soundbutton);
+        layoutFragment = (RelativeLayout) findViewById(R.id.layout_fragment_create_button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
             }
         });
 
-        adapter = new SoundButtonListAdapter(this, soundbuttons);
+        buttonList = new SoundButtonList("Main");
+
+        adapter = new SoundButtonListAdapter(this, buttonList);
 
         setSoundButtonsGrid();
     }
@@ -74,8 +81,9 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
             }
         });
 
-        soundbuttons.add(soundButton);
-        adapter.notifyDataSetChanged();
+        if(buttonList.add(soundButton)){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -102,8 +110,21 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
         Fragment fCreateButton = new CreateButtonFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.rel_layout, fCreateButton);
+        transaction.replace(R.id.layout_fragment_create_button, fCreateButton);
         transaction.commit();
+
+        Animation openCreator = new TranslateAnimation(
+                Animation.ABSOLUTE, 0f,
+                Animation.ABSOLUTE, 0f,
+                Animation.ABSOLUTE, 550f,
+                Animation.ABSOLUTE, 0f
+        );
+
+        openCreator.setDuration(500);
+        openCreator.setFillAfter(true);
+
+        layoutFragment.setVisibility(View.VISIBLE);
+        layoutFragment.startAnimation(openCreator);
     }
 
     public static void PlayAudio(InputStream is)

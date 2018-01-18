@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#233fd6</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#512DA8</color>
+    <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="colorAccentTransparent">#90FF9800</color>
+
+    <!-- Iphone colors -->
+    <color name="iphoneRed">#ff3b30</color>
+    <color name="iphoneOrange">#ff9500</color>
+    <color name="iphoneYellow">#ffcc00</color>
+    <color name="iphoneGreen">#4cd964</color>
+    <color name="iphoneTealBlue">#5ac8ff</color>
+    <color name="iphoneBlue">#007aff</color>
+    <color name="iphonePurple">#5856d6</color>
+    <color name="iphonePink">#ff2d55</color>
+    <color name="iphoneRedTransparent">#ff3b3000</color>
+    <color name="iphoneOrangeTransparent">#90ff9500</color>
+    <color name="iphoneYellowTransparent">#90ffcc00</color>
+    <color name="iphoneGreenTransparent">#904cd964</color>
+    <color name="iphoneTealBlueTransparent">#905ac8ff</color>
+    <color name="iphoneBlueTransparent">#90007aff</color>
+    <color name="iphonePurpleTransparent">#905856d6</color>
+    <color name="iphonePinkTransparent">#90ff2d55</color>
 </resources>

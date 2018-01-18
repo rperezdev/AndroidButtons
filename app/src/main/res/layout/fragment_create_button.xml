@@ -2,51 +2,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFFCF0"
+    android:layout_height="500dp"
+    android:background="@drawable/background_create_button_fragment"
     tools:context="com.buttons.lacueva.krakosky.lacuevabuttons.CreateButtonFragment">
 
+    <ImageButton
+        android:id="@+id/btn_plsay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginHorizontal="10dp"
             android:minHeight="250dp"
             android:orientation="vertical"
             android:padding="5dp">
 
-            <ImageButton
-                android:id="@+id/btn_play"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttonaccept"
-                android:maxHeight="100dp"
-                android:maxWidth="100dp"
-                android:minHeight="50dp"
-                android:minWidth="50dp"
-                android:padding="10dp"
-                android:src="@android:drawable/ic_media_play" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/buttonpreviewplay"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:padding="10dp"
+                    android:src="@android:drawable/ic_media_play" />
+
+                <ImageButton
+                    android:id="@+id/btn_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/buttonhelp"
+                    android:minHeight="25dp"
+                    android:minWidth="25dp"
+                    android:src="@android:drawable/ic_menu_set_as" />
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/edit_sound_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="2"
-                android:backgroundTint="@android:color/darker_gray"
+                android:backgroundTint="@color/colorAccent"
                 android:ems="10"
                 android:hint="@string/addsoundname"
                 android:inputType="textPersonName"
                 android:minHeight="60dp"
                 android:paddingLeft="10dp"
                 android:textColorHint="@android:color/darker_gray"
+                android:textColor="@color/colorSecondaryText"
                 android:textSize="20dp"
                 android:textStyle="italic" />
 
@@ -55,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
+                android:textColor="@color/colorDivider"
                 android:text="@string/colorpicker"
                 android:textSize="20dp" />
 
@@ -78,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="#FF2222"
+                        android:buttonTint="@color/iphoneRed"
                         android:checked="true" />
 
                     <RadioButton
@@ -86,28 +107,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="#2222FF" />
+                        android:buttonTint="@color/iphoneBlue" />
 
                     <RadioButton
                         android:id="@+id/radio_color_green"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="#45FF00" />
+                        android:buttonTint="@color/iphoneGreen" />
 
                     <RadioButton
                         android:id="@+id/radio_color_orange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="#FF4500" />
+                        android:buttonTint="@color/iphoneOrange" />
 
                     <RadioButton
                         android:id="@+id/radio_color_yellow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="#FFFF22" />
+                        android:buttonTint="@color/iphoneYellow" />
 
                 </RadioGroup>
 
@@ -126,7 +147,7 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="30dp"
-                    android:background="@drawable/buttonaccept"
+                    android:background="@drawable/buttonpreviewplay"
                     android:maxHeight="150dp"
                     android:maxWidth="150dp"
                     android:minHeight="100dp"
@@ -153,43 +174,3 @@
 
 
 </FrameLayout>
-
-<!--
-       <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btn_save"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
-                android:maxWidth="150dp"
-                android:maxHeight="150dp"
-                android:layout_weight="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/buttonaccept"
-                android:src="@android:drawable/ic_menu_save" />
-
-            <ImageButton
-                android:id="@+id/btn_help"
-                android:minWidth="25dp"
-                android:minHeight="25dp"
-                android:maxWidth="35dp"
-                android:maxHeight="35dp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="top"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/buttonhelp"
-                android:src="@android:drawable/ic_menu_help" />
-
-        </LinearLayout>
-        -->

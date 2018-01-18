@@ -21,7 +21,8 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/btn_sound"
         android:layout_marginTop="7dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
         android:text="@string/addsoundname"
         />
 

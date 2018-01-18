@@ -124,7 +124,7 @@ public class CreateButtonFragment extends Fragment {
 
         checker = new ButtonSoundChecker();
 
-        triggerFilePicker();
+        //triggerFilePicker();
 
         setOnNewColorPicked();
         setOnHelpButtonClicked();
