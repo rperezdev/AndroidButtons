@@ -11,18 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MainActivity extends AppCompatActivity implements CreateButtonFragment.OnNewSoundButtonCreated {
+public class MainActivity extends AppCompatActivity implements CreateButtonFragment.OnButtonCreatorResult {
 
     private static final int REQUEST_CODE_ADD_AUDIO = 1;
 
@@ -31,7 +30,10 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
     private SoundButtonList buttonList;
     private RelativeLayout layoutFragment;
 
+    private Fragment fCreateButton;
     private SoundButtonListAdapter adapter;
+
+    private boolean isFragmentOnForeground = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +47,13 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                triggerButtonCreator();
+                toggleButtonCreator();
             }
         });
 
         buttonList = new SoundButtonList("Main");
 
+        fCreateButton = new CreateButtonFragment();
         adapter = new SoundButtonListAdapter(this, buttonList);
 
         setSoundButtonsGrid();
@@ -65,8 +68,13 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
     }
 
     @Override
-    public void onSoundButtonCreated(final SoundButton soundButton)
+    public void onButtonCreatorResult(final SoundButton soundButton)
     {
+        toggleButtonCreator();
+
+        if(soundButton == null)
+            return;
+
         ImageButton btnSound = new ImageButton(this);
         btnSound.setImageResource(R.drawable.ic_launcher_background);
         btnSound.setBackgroundColor(Color.BLUE);
@@ -86,44 +94,63 @@ public class MainActivity extends AppCompatActivity implements CreateButtonFragm
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        button.hide();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        button.show();
-    }
-
     private void setSoundButtonsGrid()
     {
         gridSoundButtons.setAdapter(adapter);
     }
 
-    public void triggerButtonCreator()
+    public void toggleButtonCreator()
     {
-        Fragment fCreateButton = new CreateButtonFragment();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.layout_fragment_create_button, fCreateButton);
-        transaction.commit();
-
-        Animation openCreator = new TranslateAnimation(
+        final Animation openCreator = new TranslateAnimation(
                 Animation.ABSOLUTE, 0f,
                 Animation.ABSOLUTE, 0f,
-                Animation.ABSOLUTE, 550f,
-                Animation.ABSOLUTE, 0f
+                Animation.ABSOLUTE, isFragmentOnForeground ? 0 : 550f,
+                Animation.ABSOLUTE, isFragmentOnForeground ? 550f : 0f
         );
 
         openCreator.setDuration(500);
         openCreator.setFillAfter(true);
 
-        layoutFragment.setVisibility(View.VISIBLE);
+        openCreator.setAnimationListener(new Animation.AnimationListener() {
+
+            private int startVisibility;
+            private int endVisibility;
+
+            {
+                startVisibility = View.VISIBLE;
+                endVisibility = isFragmentOnForeground ? View.GONE : View.VISIBLE;
+            }
+
+            @Override public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+                layoutFragment.setVisibility(startVisibility);
+
+                if(!isFragmentOnForeground) {
+                    transaction.replace(R.id.layout_fragment_create_button, fCreateButton);
+                    transaction.commit();
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                layoutFragment.setVisibility(endVisibility);
+
+                if(isFragmentOnForeground) {
+                    transaction.remove(fCreateButton);
+                    transaction.commit();
+                }
+
+                isFragmentOnForeground ^= true;
+            }
+
+        });
+
         layoutFragment.startAnimation(openCreator);
     }
 

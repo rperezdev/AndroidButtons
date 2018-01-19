@@ -2,18 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/background_create_button_fragment"
     tools:context="com.buttons.lacueva.krakosky.lacuevabuttons.CreateButtonFragment">
-
-    <ImageButton
-        android:id="@+id/btn_plsay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,37 +13,63 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginHorizontal="10dp"
             android:minHeight="250dp"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:paddingTop="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">
 
                 <ImageButton
+                    android:id="@+id/btn_load"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/secondarybutton"
+                    android:src="@android:drawable/ic_menu_set_as"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_play"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
                     android:id="@+id/btn_play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:background="@drawable/buttonpreviewplay"
                     android:minHeight="100dp"
                     android:minWidth="100dp"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_media_play" />
+                    android:padding="2dp"
+                    android:src="@android:drawable/ic_media_play"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/btn_load"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_save" />
 
                 <ImageButton
-                    android:id="@+id/btn_load"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/buttonhelp"
-                    android:minHeight="25dp"
-                    android:minWidth="25dp"
-                    android:src="@android:drawable/ic_menu_set_as" />
+                    android:id="@+id/btn_save"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/secondarybutton"
+                    android:src="@android:drawable/ic_menu_save"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toRightOf="@+id/btn_play"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
+            </android.support.constraint.ConstraintLayout>
 
             <EditText
                 android:id="@+id/edit_sound_name"
@@ -65,9 +82,12 @@
                 android:inputType="textPersonName"
                 android:minHeight="60dp"
                 android:paddingLeft="10dp"
-                android:textColorHint="@android:color/darker_gray"
+                android:paddingStart="10dp"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:textColor="@color/colorSecondaryText"
-                android:textSize="20dp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="20sp"
                 android:textStyle="italic" />
 
             <TextView
@@ -75,14 +95,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:textColor="@color/colorDivider"
                 android:text="@string/colorpicker"
-                android:textSize="20dp" />
+                android:textColor="@color/colorDivider"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
@@ -91,7 +111,6 @@
                     android:id="@+id/radiogroup_colors"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -134,43 +153,27 @@
 
             </LinearLayout>
 
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-                <ImageButton
-                    android:id="@+id/btn_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/buttonpreviewplay"
-                    android:maxHeight="150dp"
-                    android:maxWidth="150dp"
-                    android:minHeight="100dp"
-                    android:minWidth="100dp"
-                    android:src="@android:drawable/ic_menu_save" />
-
-                <ImageButton
-                    android:id="@+id/btn_help"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/buttonhelp"
-                    android:maxHeight="35dp"
-                    android:maxWidth="35dp"
-                    android:minHeight="25dp"
-                    android:minWidth="25dp"
-                    android:src="@android:drawable/ic_menu_help" />
-
-            </RelativeLayout>
-
         </LinearLayout>
+
     </ScrollView>
 
+    <ImageButton
+        android:id="@+id/btn_esc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <ImageButton
+        android:id="@+id/btn_help"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/buttonhelp"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/ic_menu_help" />
 
 </FrameLayout>

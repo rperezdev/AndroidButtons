@@ -50,7 +50,7 @@ public class SoundButtonListAdapter extends ArrayAdapter<SoundButton> {
         });
 
         TextView txtBtnSound = item.findViewById(R.id.txt_name);
-        txtBtnSound.setText(sb.getName().toUpperCase());
+        txtBtnSound.setText(sb.getName());
 
         return item;
     }

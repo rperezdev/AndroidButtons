@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -14,6 +15,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -77,7 +80,11 @@ public class CreateButtonFragment extends Fragment {
             for(int i = 0; i < msgIds.size(); i++) {
                 String msg = mResources.getString(msgIds.get(i));
 
-                message += msg + ((i == (msgIds.size() - 1)) ? "." : ",");
+                if(msgIds.size() > 1) {
+                    msg = msg.toLowerCase();
+                }
+
+                message += msg + (i < (msgIds.size() - 1) ? ", " : ".");
             }
 
             return message;
@@ -90,20 +97,22 @@ public class CreateButtonFragment extends Fragment {
     private static final int MIN_NAME_LENGTH = 3;
     private static final int MAX_NAME_LENGTH = 11;
 
-    private OnNewSoundButtonCreated mCallback = null;
+    private OnButtonCreatorResult mCallback = null;
 
     private ImageButton btn_Sound;
-    private EditText edit_Name;
     private ImageButton btn_Save;
+    private ImageButton btn_Load;
     private ImageButton btn_Help;
+    private ImageButton btn_Exit;
+    private EditText edit_Name;
     private RadioGroup rgroup_Colors;
 
     private SoundButton sButton;
     private ButtonSoundChecker checker;
     private InputStream is;
 
-    public interface OnNewSoundButtonCreated {
-        void onSoundButtonCreated(SoundButton soundButton);
+    public interface OnButtonCreatorResult {
+        void onButtonCreatorResult(SoundButton soundButton);
     }
 
     @Override
@@ -114,7 +123,9 @@ public class CreateButtonFragment extends Fragment {
 
         btn_Sound     =  (ImageButton) fragmentView.findViewById(R.id.btn_play);
         btn_Save      =  (ImageButton) fragmentView.findViewById(R.id.btn_save);
+        btn_Load      =  (ImageButton) fragmentView.findViewById(R.id.btn_load);
         btn_Help      =  (ImageButton) fragmentView.findViewById(R.id.btn_help);
+        btn_Exit      =   (ImageButton) fragmentView.findViewById(R.id.btn_esc);
         edit_Name     =     (EditText) fragmentView.findViewById(R.id.edit_sound_name);
         rgroup_Colors =   (RadioGroup) fragmentView.findViewById(R.id.radiogroup_colors);
 
@@ -124,11 +135,11 @@ public class CreateButtonFragment extends Fragment {
 
         checker = new ButtonSoundChecker();
 
-        //triggerFilePicker();
-
         setOnNewColorPicked();
-        setOnHelpButtonClicked();
         setOnSaveButtonClicked();
+        setOnLoadButtonClicked();
+        setOnHelpButtonClicked();
+        setOnExitButtonClicked();
         setOnNameChanged();
 
         return fragmentView;
@@ -138,7 +149,12 @@ public class CreateButtonFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mCallback = (OnNewSoundButtonCreated) context;
+        try {
+            mCallback = (OnButtonCreatorResult) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -151,30 +167,29 @@ public class CreateButtonFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == REQUEST_CODE_ADD_AUDIO && resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-        }
-
         if(requestCode == REQUEST_CODE_ADD_AUDIO && resultCode == Activity.RESULT_OK) {
-
             sButton.setUri(data.getData().toString());
-
-            try {
-                is = getActivity().getContentResolver().openInputStream(Uri.parse(sButton.getUri()));
-            } catch (FileNotFoundException e) {
-                Toast.makeText(getActivity(), "Fail: "+sButton.getUri(), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-
-            btn_Sound.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PlayAudio(is);
-                }
-            });
-
-            Toast.makeText(getActivity(), "Sound added", Toast.LENGTH_LONG).show();
+            setButtonPreview();
         }
+    }
+
+    private void setButtonPreview()
+    {
+        btn_Save.setEnabled(checker.getSoundButtonStatus(sButton) == 0);
+
+        try {
+            is = getActivity().getContentResolver().openInputStream(Uri.parse(sButton.getUri()));
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getActivity(), "Fail: "+sButton.getUri(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+        btn_Sound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlayAudio(is);
+            }
+        });
     }
 
     private void setOnNewColorPicked()
@@ -204,6 +219,36 @@ public class CreateButtonFragment extends Fragment {
         });
     }
 
+    private void setOnLoadButtonClicked()
+    {
+        btn_Load.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    btn_Load.setElevation(15);
+                }
+
+
+                Animation scale = new ScaleAnimation(1.15f, 1f, 1.15f, 1f, 15f, 15f);
+
+                scale.setDuration(350);
+                scale.setAnimationListener(new Animation.AnimationListener() {
+
+                    @Override public void onAnimationStart(Animation animation) {}
+                    @Override public void onAnimationRepeat(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        triggerFilePicker();
+                    }
+                });
+
+                btn_Load.startAnimation(scale);
+            }
+        });
+    }
+
     private void setOnHelpButtonClicked()
     {
         btn_Help.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +266,17 @@ public class CreateButtonFragment extends Fragment {
         btn_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveButtonSound();
+                saveAndExit();
+            }
+        });
+    }
+
+    private void setOnExitButtonClicked()
+    {
+        btn_Exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelAndExit();
             }
         });
     }
@@ -233,9 +288,21 @@ public class CreateButtonFragment extends Fragment {
         startActivityForResult(intent, REQUEST_CODE_ADD_AUDIO);
     }
 
-    private void saveButtonSound()
+    private void saveAndExit()
     {
-        mCallback.onSoundButtonCreated(sButton);
+        exitCreator();
+    }
+
+    private void cancelAndExit()
+    {
+        sButton = null;
+
+        exitCreator();
+    }
+
+    private void exitCreator()
+    {
+        mCallback.onButtonCreatorResult(sButton);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.remove(this);
