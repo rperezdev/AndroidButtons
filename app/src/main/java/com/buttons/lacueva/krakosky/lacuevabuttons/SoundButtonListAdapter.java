@@ -41,8 +41,9 @@ public class SoundButtonListAdapter extends ArrayAdapter<SoundButton> {
         btnSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 try {
-                    MainActivity.PlayAudio(sb.getInputStream(mContext));
+                    MainActivity.PlayAudio(sb.getInputStream());
                 } catch(IOException e) {
                     e.printStackTrace();
                 }

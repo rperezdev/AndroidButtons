@@ -18,7 +18,7 @@
         android:layout_marginRight="2dp"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="10dp"
-        android:columnWidth="85dp"
+        android:columnWidth="100dp"
         android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
         android:stretchMode="spacingWidthUniform"

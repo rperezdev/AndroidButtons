@@ -1,15 +1,16 @@
 package com.buttons.lacueva.krakosky.lacuevabuttons;
 
 
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoundButtonList extends AbstractList<SoundButton> {
+public class SoundButtonList extends AbstractList<SoundButton> implements Serializable {
 
     private String mName;
 
-    private List<SoundButton> buttons = new ArrayList<SoundButton>();
+    private List<SoundButton> buttons = new ArrayList<>();
 
     public SoundButtonList() {
         mName = null;
@@ -19,28 +20,7 @@ public class SoundButtonList extends AbstractList<SoundButton> {
         mName = name;
     }
 
-    @Override
-    public SoundButton get(int i)
-    {
-        return buttons.get(i);
-    }
 
-    @Override
-    public int size()
-    {
-        return buttons.size();
-    }
-
-    @Override
-    public boolean add(SoundButton soundButton)
-    {
-        if(buttons.contains(soundButton)) {
-            return false;
-        }
-
-        buttons.add(soundButton);
-        return true;
-    }
 
     public boolean remove(SoundButton soundButton)
     {
@@ -87,6 +67,29 @@ public class SoundButtonList extends AbstractList<SoundButton> {
         return false;
     }
 
+
+    @Override
+    public SoundButton get(int i)
+    {
+        return buttons.get(i);
+    }
+
+    @Override
+    public int size()
+    {
+        return buttons.size();
+    }
+
+    @Override
+    public boolean add(SoundButton soundButton)
+    {
+        if(buttons.contains(soundButton)) {
+            return false;
+        }
+
+        buttons.add(soundButton);
+        return true;
+    }
 
     /* ********************************
      *  GETTERS & SETTERS

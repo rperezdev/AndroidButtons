@@ -2,6 +2,7 @@ package com.buttons.lacueva.krakosky.lacuevabuttons;
 
 import android.content.Context;
 import android.net.Uri;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,41 +20,41 @@ public class SoundButton implements Serializable {
 
     private String mName;
     private Color mColor;
-    private String mUri;
+    private String mPath;
 
-    private InputStream mIS = null;
+    private transient InputStream mIS;
+
+    private boolean hasPathChanged = false;
 
 
     public SoundButton()
     {
         mColor = Color.BLUE;
+        mIS = null;
     }
 
-    public SoundButton(String name)
+    public SoundButton(InputStream is)
     {
-        mName = name;
         mColor = Color.BLUE;
+        mIS = is;
     }
 
-    public SoundButton(String name, Color color)
+    public void setVolatileInputStream(InputStream is)
     {
-        mName = name;
-        mColor = color;
+        if(mPath == null || mPath.isEmpty())
+        {
+            mIS = is;
+        }
     }
 
-    public SoundButton(String name, Color color, String uri)
+    public InputStream getInputStream() throws IOException
     {
-        mName = name;
-        mColor = color;
-        mUri = uri;
-    }
+        if(mIS == null || hasPathChanged)
+        {
+            mIS = MemoryManager.readInputStreamFromPath(mPath);
 
-    public InputStream getInputStream(Context context) throws IOException
-    {
-        if(mUri == null || mUri.isEmpty())
-            return null;
-
-        mIS = context.getContentResolver().openInputStream(Uri.parse(mUri));
+            hasPathChanged = false;
+        }
 
         return mIS;
     }
@@ -61,7 +62,7 @@ public class SoundButton implements Serializable {
     @Override
     public String toString()
     {
-        return mColor + "  " + mName + "  " + mUri;
+        return mColor + "  " + mName + "  " + mPath;
     }
     /************************
      * Getters & Setters
@@ -75,12 +76,20 @@ public class SoundButton implements Serializable {
         this.mName = name;
     }
 
-    public String getUri() {
-        return mUri;
+    public String getPath() {
+        return mPath;
     }
 
-    public void setUri(String uri) {
-        this.mUri = uri;
+    public void setPath(String path)
+    {
+        String aux = this.mPath;
+
+        this.mPath = path;
+
+        if(aux != null && !aux.equals(mPath))
+        {
+            hasPathChanged = true;
+        }
     }
 
     public Color getColor() {

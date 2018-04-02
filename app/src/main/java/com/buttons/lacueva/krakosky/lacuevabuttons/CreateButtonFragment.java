@@ -5,11 +5,13 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.buttons.lacueva.krakosky.lacuevabuttons.exceptions.CopyInputStreamException;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,67 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateButtonFragment extends Fragment {
-
-    private class ButtonSoundChecker {
-
-        private Resources mResources;
-
-        public ButtonSoundChecker() {
-            mResources = CreateButtonFragment.this.getActivity().getResources();
-        }
-
-        public int getSoundButtonStatus(SoundButton sButton)
-        {
-            int errorNum = 0;
-
-            if(sButton == null || sButton.getName() == null || sButton.getName().isEmpty()) {
-                errorNum += CreateButtonError.ERR_NAME_EMPTY;
-            } else {
-
-                if(sButton.getName().length() < MIN_NAME_LENGTH)
-                    errorNum += CreateButtonError.ERR_NAME_TOO_SHORT;
-
-                if(sButton.getName().length() > MAX_NAME_LENGTH)
-                    errorNum += CreateButtonError.ERR_NAME_TOO_LONG;
-            }
-
-            if(sButton.getUri() == null || sButton.getUri().isEmpty())
-                errorNum += CreateButtonError.ERR_URI_EMPTY;
-
-            return errorNum;
-        }
-
-        public String getErrorMessage(int status)
-        {
-            String message = "";
-
-            List<Integer> msgIds = new ArrayList<Integer>();
-
-            int errId = 1;
-            while (status > 0)
-            {
-                if(status % 2 == 1) {
-                    msgIds.add(CreateButtonError.getMessageId(errId));
-                }
-
-                status = status >> 1;
-                errId = errId << 1;
-            }
-
-            for(int i = 0; i < msgIds.size(); i++) {
-                String msg = mResources.getString(msgIds.get(i));
-
-                if(msgIds.size() > 1) {
-                    msg = msg.toLowerCase();
-                }
-
-                message += msg + (i < (msgIds.size() - 1) ? ", " : ".");
-            }
-
-            return message;
-        }
-
-    }
 
     private static final int REQUEST_CODE_ADD_AUDIO = 1;
 
@@ -125,14 +68,13 @@ public class CreateButtonFragment extends Fragment {
         btn_Save      =  (ImageButton) fragmentView.findViewById(R.id.btn_save);
         btn_Load      =  (ImageButton) fragmentView.findViewById(R.id.btn_load);
         btn_Help      =  (ImageButton) fragmentView.findViewById(R.id.btn_help);
-        btn_Exit      =   (ImageButton) fragmentView.findViewById(R.id.btn_esc);
+        btn_Exit      =  (ImageButton) fragmentView.findViewById(R.id.btn_esc);
         edit_Name     =     (EditText) fragmentView.findViewById(R.id.edit_sound_name);
         rgroup_Colors =   (RadioGroup) fragmentView.findViewById(R.id.radiogroup_colors);
 
-        sButton = new SoundButton();
-
         btn_Save.setEnabled(false);
 
+        sButton = new SoundButton();
         checker = new ButtonSoundChecker();
 
         setOnNewColorPicked();
@@ -164,11 +106,22 @@ public class CreateButtonFragment extends Fragment {
         mCallback = null;
     }
 
+    /*
+        This method gets triggered onResult of the FILEPICKER FRAGMENT.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if(requestCode == REQUEST_CODE_ADD_AUDIO && resultCode == Activity.RESULT_OK) {
-            sButton.setUri(data.getData().toString());
+
+            try {
+                is = MemoryManager.uri2InputStream(getActivity(), data.getData());
+            } catch (FileNotFoundException e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG);
+            }
+
+            sButton.setVolatileInputStream(is);
+
             setButtonPreview();
         }
     }
@@ -176,13 +129,6 @@ public class CreateButtonFragment extends Fragment {
     private void setButtonPreview()
     {
         btn_Save.setEnabled(checker.getSoundButtonStatus(sButton) == 0);
-
-        try {
-            is = getActivity().getContentResolver().openInputStream(Uri.parse(sButton.getUri()));
-        } catch (FileNotFoundException e) {
-            Toast.makeText(getActivity(), "Fail: "+sButton.getUri(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
 
         btn_Sound.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,15 +152,26 @@ public class CreateButtonFragment extends Fragment {
     {
         edit_Name.addTextChangedListener(new TextWatcher() {
 
+            private boolean lockAddition = false;
+
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count)
             {
                 sButton.setName(charSequence.toString());
                 btn_Save.setEnabled(checker.getSoundButtonStatus(sButton) == 0);
             }
 
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override public void afterTextChanged(Editable editable) {}
+            @Override public void beforeTextChanged(CharSequence charSequence, int start, int before, int count)
+            {
+                lockAddition = before > MAX_NAME_LENGTH;
+            }
+
+            @Override public void afterTextChanged(Editable editable)
+            {
+                if(editable.length() > MAX_NAME_LENGTH) {
+                    editable.replace(MAX_NAME_LENGTH, MAX_NAME_LENGTH + 1, "");
+                }
+            }
 
         });
     }
@@ -290,6 +247,19 @@ public class CreateButtonFragment extends Fragment {
 
     private void saveAndExit()
     {
+        try {
+            MemoryManager.copyInputStreamToProjectFolder(is, sButton.getName(), MemoryManager.Folder.SOUNDS);
+            sButton.setPath(MemoryManager.Folder.SOUNDS.getPath() + "/" + sButton.getName());
+        }
+        catch (IOException e) {
+            Toast.makeText(getActivity(), "Error saving file to App folder.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        catch (CopyInputStreamException e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         exitCreator();
     }
 
@@ -349,5 +319,70 @@ public class CreateButtonFragment extends Fragment {
             default:
                 return SoundButton.Color.BLUE;
         }
+    }
+
+
+    /**
+     * Class for checking button creation Status
+     */
+    private class ButtonSoundChecker {
+
+        private Resources mResources;
+
+        public ButtonSoundChecker() {
+            mResources = CreateButtonFragment.this.getActivity().getResources();
+        }
+
+        public int getSoundButtonStatus(SoundButton sButton)
+        {
+            int errorNum = 0;
+
+            if(sButton == null || sButton.getName() == null || sButton.getName().isEmpty()) {
+                errorNum += CreateButtonError.ERR_NAME_EMPTY;
+            } else {
+
+                if(sButton.getName().length() < MIN_NAME_LENGTH)
+                    errorNum += CreateButtonError.ERR_NAME_TOO_SHORT;
+
+                if(sButton.getName().length() > MAX_NAME_LENGTH)
+                    errorNum += CreateButtonError.ERR_NAME_TOO_LONG;
+            }
+
+            if(CreateButtonFragment.this.is == null)
+                errorNum += CreateButtonError.ERR_URI_EMPTY;
+
+            return errorNum;
+        }
+
+        public String getErrorMessage(int status)
+        {
+            String message = "";
+
+            List<Integer> msgIds = new ArrayList<Integer>();
+
+            int errId = 1;
+            while (status > 0)
+            {
+                if(status % 2 == 1) {
+                    msgIds.add(CreateButtonError.getMessageId(errId));
+                }
+
+                status = status >> 1;
+                errId = errId << 1;
+            }
+
+            for(int i = 0; i < msgIds.size(); i++) {
+                String msg = mResources.getString(msgIds.get(i));
+
+                if(msgIds.size() > 1) {
+                    msg = msg.toLowerCase();
+                }
+
+                message += msg + (i < (msgIds.size() - 1) ? ", " : ".");
+            }
+
+            return message;
+        }
+
     }
 }
