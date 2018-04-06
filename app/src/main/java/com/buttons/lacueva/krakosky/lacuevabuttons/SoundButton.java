@@ -1,9 +1,9 @@
 package com.buttons.lacueva.krakosky.lacuevabuttons;
 
-import android.content.Context;
-import android.net.Uri;
-import android.widget.Toast;
+import com.buttons.lacueva.krakosky.lacuevabuttons.exceptions.AttachEmptySoundException;
 
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -21,22 +21,44 @@ public class SoundButton implements Serializable {
     private String mName;
     private Color mColor;
     private String mPath;
+    private FileDescriptor mFD;
 
     private transient InputStream mIS;
+    private transient SoundPlayer player;
 
     private boolean hasPathChanged = false;
 
 
-    public SoundButton()
-    {
+    public SoundButton() throws IOException, AttachEmptySoundException {
         mColor = Color.BLUE;
         mIS = null;
+
+        player = new SoundPlayer(this);
     }
 
-    public SoundButton(InputStream is)
-    {
+    public SoundButton(InputStream is)  throws IOException, AttachEmptySoundException {
         mColor = Color.BLUE;
         mIS = is;
+
+        player = new SoundPlayer(this);
+    }
+
+
+    public void setFD(FileDescriptor fd)
+    {
+        mFD = fd;
+    }
+
+    public void setFD(InputStream is) throws java.io.IOException
+    {
+        if(is != null) {
+            mFD = ((FileInputStream) is).getFD();
+        }
+    }
+
+    public FileDescriptor getFD()
+    {
+        return mFD;
     }
 
     public void setVolatileInputStream(InputStream is)
@@ -76,6 +98,7 @@ public class SoundButton implements Serializable {
         this.mName = name;
     }
 
+
     public String getPath() {
         return mPath;
     }
@@ -91,6 +114,7 @@ public class SoundButton implements Serializable {
             hasPathChanged = true;
         }
     }
+
 
     public Color getColor() {
         return mColor;

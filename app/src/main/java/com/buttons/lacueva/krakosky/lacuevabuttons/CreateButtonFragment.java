@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.buttons.lacueva.krakosky.lacuevabuttons.exceptions.AttachEmptySoundException;
 import com.buttons.lacueva.krakosky.lacuevabuttons.exceptions.CopyInputStreamException;
 
 import java.io.FileInputStream;
@@ -53,6 +54,8 @@ public class CreateButtonFragment extends Fragment {
     private SoundButton sButton;
     private ButtonSoundChecker checker;
     private InputStream is;
+
+    private SoundPlayer player;
 
     public interface OnButtonCreatorResult {
         void onButtonCreatorResult(SoundButton soundButton);
@@ -121,6 +124,12 @@ public class CreateButtonFragment extends Fragment {
             }
 
             sButton.setVolatileInputStream(is);
+
+            try {
+                sButton.setFD(is);
+            } catch (IOException ex) {
+                Toast.makeText(getActivity(), "IOEXCEPTION on setting FILE DESCRIPTOR", Toast.LENGTH_LONG);
+            }
 
             setButtonPreview();
         }
